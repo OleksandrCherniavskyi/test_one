@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My To-Do App{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav>
+            <h1 class="bottom">
+               {% if current_user.is_authenticated %}
+               Hi {{ current_user.username }}!!
+               {% else %}
+               My To-Do App
+               {% endif %}
+            </h1>
+            <ul>
+                <li><a href="{{ url_for('task_list', slug=current_user.slug) }}">TASK LIST <--Click here</a></li>
+                {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('register') }}">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 My To-Do App</p>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

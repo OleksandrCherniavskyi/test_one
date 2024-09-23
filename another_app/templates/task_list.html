@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Task List{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Create New Task</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="task_title">Task Title:</label>
+                    <input type="text" class="form-control" id="task_title" name="task_title" required>
+                </div>
+                <div class="form-group">
+                    <label for="task_comment">Comment:</label>
+                    <textarea class="form-control" id="task_comment" name="task_comment"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Task</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h2>Your Tasks</h2>
+            <ul class="list-group">
+                {% for task in tasks %}
+                    <li class="list-group-item">
+                        <h4><a href="{{ url_for('task_detail', task_id=task.id_task) }}">{{ task.task_title }}</a></h4>
+
+
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

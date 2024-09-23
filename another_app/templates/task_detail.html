@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Task Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2>Nazwa {{ task.task_title }}</h2>
+        </div>
+        <div class="card-body">
+            <p>Status: {{ task.task_status }}</p>
+            <ul>
+                {% for comment in open_comments %}
+                    <li>{{ comment.datetime }} - {{ comment.comment }}</li>
+                {% endfor %}
+            </ul>
+
+
+
+            </ul>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="task_comment">Add a comment:</label>
+                    <textarea class="form-control" id="task_comment" name="task_comment"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Comment</button>
+            </form>
+            <p>
+                <a href="{{ url_for('task_list', slug=current_user.slug) }}" class="btn btn-secondary">Back to Task List</a>
+
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
