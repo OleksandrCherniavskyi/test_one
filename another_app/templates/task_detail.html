@@ -3,34 +3,39 @@
 {% block title %}Task Details{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h2>Nazwa {{ task.task_title }}</h2>
-        </div>
-        <div class="card-body">
-            <p>Status: {{ task.task_status }}</p>
-            <ul>
-                {% for comment in open_comments %}
-                    <li>{{ comment.datetime }} - {{ comment.comment }}</li>
-                {% endfor %}
-            </ul>
+<h1>Task Detail</h1>
 
+    <!-- Display Task Info -->
+    <p><strong>Task Title:</strong> {{ task.task_title }}</p>
+    <p><strong>Task Status:</strong> {{ 'Completed' if task.task_status else 'Incomplete' }}</p>
 
+    <!-- Form to Update Task Status and Add Comment -->
+    <form method="POST">
+        <button type="submit" name="task_status">{{ 'Mark as Incomplete' if task.task_status else 'Mark as Complete' }}</button>
+        <br><br>
+        <label for="task_comment">Add Comment:</label>
+        <input type="text" id="task_comment" name="task_comment">
+        <button type="submit">Submit Comment</button>
+    </form>
 
-            </ul>
-            <form method="POST">
-                <div class="form-group">
-                    <label for="task_comment">Add a comment:</label>
-                    <textarea class="form-control" id="task_comment" name="task_comment"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Add Comment</button>
-            </form>
-            <p>
-                <a href="{{ url_for('task_list', slug=current_user.slug) }}" class="btn btn-secondary">Back to Task List</a>
+    <hr>
 
-            </p>
-        </div>
-    </div>
-</div>
+    <!-- Display Task Comments in a Table -->
+    <h2>Comments for this Task</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Date & Time</th>
+                <th>Comment</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for comment in task_comments %}
+            <tr>
+                <td>{{ comment.datetime.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>{{ comment.comment }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

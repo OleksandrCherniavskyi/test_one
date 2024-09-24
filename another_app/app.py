@@ -79,9 +79,12 @@ def login():
             session['id'] = user.id
             session['username'] = user.username
             msg = 'Logged in successfully!'
-            return render_template('task_list.html', msg=msg)
+
+            # Redirect to task_list after successful login
+            return redirect(url_for('task_list'))
         else:
             msg = 'Incorrect username / password!'
+
     return render_template('login.html', msg=msg)
 
 
@@ -130,7 +133,8 @@ def register():
 def task_list():
     user_id = current_user.id
 
-    tasks = Task.query.filter_by(id_users=user_id).all()
+    # Only fetch incomplete tasks for the task list
+    tasks = Task.query.filter_by(id_users=user_id, task_status=False).all()
 
     if request.method == 'POST':
         task_title = request.form['task_title']
@@ -138,14 +142,12 @@ def task_list():
 
         new_task = Task(task_title=task_title, task_status=False, id_users=user_id)
         db.session.add(new_task)
-
         db.session.commit()
 
         # Automatic comment for task creation
         auto_comment = TaskComment(id_task=new_task.id_task, datetime=datetime.now(), comment="Task created")
         db.session.add(auto_comment)
 
-        # User comment (if provided)
         if task_comment:
             user_comment = TaskComment(id_task=new_task.id_task, datetime=datetime.now(), comment=task_comment)
             db.session.add(user_comment)
@@ -156,6 +158,19 @@ def task_list():
 
     return render_template('task_list.html', tasks=tasks)
 
+
+@app.route('/archive', methods=['GET'])
+@login_required
+def archive():
+    user_id = current_user.id
+
+    # Fetch completed tasks for the archive
+    completed_tasks = Task.query.filter_by(id_users=user_id, task_status=True).all()
+
+    return render_template('archive.html', tasks=completed_tasks)
+
+
+
 @app.route('/task_detail/<int:task_id>', methods=['GET', 'POST'])
 @login_required
 def task_detail(task_id):
@@ -165,8 +180,8 @@ def task_detail(task_id):
     # if task.id_users != current_user.id:
     #     abort(403)  # Unauthorized access
 
-    # Retrieve open comments for the task
-    open_comments = db.session.query(TaskComment).join(Task).filter(Task.task_status == 1, TaskComment.id_task == task.id_task).all()
+    # Retrieve all comments for the task, ordered by the datetime they were created
+    task_comments = TaskComment.query.filter_by(id_task=task.id_task).order_by(TaskComment.datetime).all()
 
     if request.method == 'POST':
         if 'task_status' in request.form:
@@ -174,14 +189,19 @@ def task_detail(task_id):
             db.session.commit()
             flash('Task status updated successfully!', 'success')
         elif 'task_comment' in request.form:
-            comment = TaskComment(id_task=task.id_task, datetime=datetime.now(), comment=request.form['task_comment'])
-            db.session.add(comment)
+            new_comment = TaskComment(
+                id_task=task.id_task,
+                datetime=datetime.now(),
+                comment=request.form['task_comment']
+            )
+            db.session.add(new_comment)
             db.session.commit()
             flash('Comment added successfully!', 'success')
 
         return redirect(url_for('task_detail', task_id=task.id_task))
 
-    return render_template('task_detail.html', task=task, open_comments=open_comments)
+    # Pass task, comments, and their datetime to the template
+    return render_template('task_detail.html', task=task, task_comments=task_comments)
 
 
 if __name__ == '__main__':
