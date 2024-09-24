@@ -3,9 +3,12 @@
 {% block title %}Task Details{% endblock %}
 
 {% block content %}
-<h1>Task Detail</h1>
 
-    <!-- Display Task Info -->
+
+<div class="split left">
+  <div class="centered">
+
+    <h2>Task Detail</h2>
     <p><strong>Task Title:</strong> {{ task.task_title }}</p>
     <p><strong>Task Status:</strong> {{ 'Completed' if task.task_status else 'Incomplete' }}</p>
 
@@ -17,25 +20,33 @@
         <input type="text" id="task_comment" name="task_comment">
         <button type="submit">Submit Comment</button>
     </form>
+  </div>
+</div>
 
-    <hr>
+<div class="split right">
+  <div class="centered">
 
-    <!-- Display Task Comments in a Table -->
     <h2>Comments for this Task</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Date & Time</th>
-                <th>Comment</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for comment in task_comments %}
-            <tr>
-                <td>{{ comment.datetime.strftime('%Y-%m-%d %H:%M:%S') }}</td>
-                <td>{{ comment.comment }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+        <table border="1" >
+            <thead>
+                <tr>
+                    <th>Date & Time</th>
+                    <th>Comment</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for comment in task_comments %}
+                <tr>
+                    <td>{{ comment.datetime.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td>{{ comment.comment }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+      <a href="{{ url_for('task_list') }}" class="btn btn-primary">Back to Task List</a>
+  </div>
+</div>
+
 {% endblock %}

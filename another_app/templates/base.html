@@ -13,23 +13,25 @@
 </head>
 <body>
     <header>
-        <nav>
-            <h1 class="bottom">
-               {% if current_user.is_authenticated %}
-               Hi {{ current_user.username }}!!
-               {% else %}
-               My To-Do App
-               {% endif %}
-            </h1>
-            <ul>
-                <li><a href="{{ url_for('task_list', slug=current_user.slug) }}">TASK LIST <--Click here</a></li>
+        <nav class="navbar">
+            <div class="navbar-left">
+                <ul class="navbar-links">
+                    <li><a href="{{ url_for('task_list', slug=current_user.slug) }}">TASK LIST</a></li>
+                    {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('login') }}">Login</a></li>
+                        <li><a href="{{ url_for('register') }}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="navbar-right">
                 {% if current_user.is_authenticated %}
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    <p>Hi {{ current_user.username }}</p>
                 {% else %}
-                <li><a href="{{ url_for('login') }}">Login</a></li>
-                <li><a href="{{ url_for('register') }}">Register</a></li>
+                    <p>Page available just for authenticating users</p>
                 {% endif %}
-            </ul>
+            </div>
         </nav>
     </header>
 
@@ -38,7 +40,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 My To-Do App</p>
+        <p>&copy; 2024 To-Do App by OC with AI</p>
     </footer>
 
     {% block scripts %}{% endblock %}

@@ -1,0 +1,113 @@
+/* Navbar styling */
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Ensures left and right sections are on opposite sides */
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-links {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navbar-links li {
+    margin-right: 20px;
+}
+
+.navbar-links a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-right p {
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Footer styling */
+footer {
+    text-align: center; /* Centers the footer content */
+    padding: 20px;
+    background-color: #f8f9fa;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid #ddd;
+}
+/* Center login card on the page */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+}
+
+.card {
+    width: 100%;
+    max-width: 400px; /* Adjust the max width of the card */
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.card-header {
+    text-align: center;
+}
+
+.alert {
+    text-align: center;
+}
+
+.btn-block {
+    width: 100%;
+}
+/* Split the screen in half */
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+
+}
+
+/* If you want the content centered horizontally and vertically */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
