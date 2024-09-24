@@ -3,36 +3,42 @@
 {% block title %}Task List{% endblock %}
 
 {% block content %}
+
 <div class="split left">
   <div class="centered">
+
     <h2>Create New Task</h2>
-    <form method="POST">
-      <div class="form-group">
-        <label for="task_title">Task Title:</label>
-        <input type="text" class="form-control" id="task_title" name="task_title" required>
-      </div>
-      <div class="form-group">
-        <label for="task_comment">Comment:</label>
-        <textarea class="form-control" id="task_comment" name="task_comment"></textarea>
-      </div>
-      <button type="submit" class="btn btn-primary btn-block">Create Task</button>
-    </form>
+        <form method="POST">
+                <div class="form-group">
+                    <label for="task_title">Task Title:</label>
+                    <input type="text" class="form-control" id="task_title" name="task_title" required>
+                </div>
+                <div class="form-group">
+                    <label for="task_comment">Comment:</label>
+                    <textarea class="form-control" id="task_comment" name="task_comment"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Create Task</button>
+        </form>
   </div>
 </div>
 
 <div class="split right">
   <div class="centered">
+
     <h2>Your Incomplete Tasks</h2>
-    <ul class="list-group">
-      {% for task in tasks %}
-      <li class="list-group-item">
-        <h4><a href="{{ url_for('task_detail', task_id=task.id_task) }}">{{ task.task_title }}</a></h4>
-      </li>
-      {% endfor %}
-    </ul>
-    <div class="mt-3">
-      <a href="{{ url_for('archive') }}" class="btn btn-secondary btn-block">View Archived Tasks</a>
-    </div>
+        <ul class="list-group">
+                {% for task in tasks %}
+                    <li class="list-group-item">
+                        <h4><a href="{{ url_for('task_detail', task_id=task.id_task) }}">{{ task.task_title }}</a></h4>
+                    </li>
+                {% endfor %}
+        </ul>
+        <div>
+            <a href="{{ url_for('archive') }}" class="btn btn-secondary btn-block">View Archived Tasks</a>
+        </div>
   </div>
 </div>
+
+
+
 {% endblock %}
